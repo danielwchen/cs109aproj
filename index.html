@@ -1,47 +1,135 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
 <head>
-    <meta charset="UTF-8">
-    <title>Recommending Food Reviews</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Predicting Amazon Reviews</title>
+    <meta name="author" content="Harrison Li, Thomas Jiang, Masahiro Kusunoki, Daniel Chen" />
+    <meta name="description" content="CS109A Fall 2016 Final Project" />
+    <meta name="keywords"  content="" />
+    <meta name="Resource-type" content="Document" />
 
 
-    <link rel="stylesheet" href="css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="css/jquery.fullPage.css" />
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" type="text/css" href="css/examples.css" />
+
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.9.1/jquery-ui.min.js"></script>
+
+    <script type="text/javascript" src="js/jquery.fullPage.js"></script>
+    <script type="text/javascript" src="js/examples.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $('#fullpage').fullpage({
+                sectionsColor: ['#1bbc9b', '#4BBFC3', '#7BAABE', 'whitesmoke', '#ccddff'],
+                anchors: ['firstPage', 'secondPage', '3rdPage', '4thpage', 'lastPage'],
+                menu: '#menu',
+                scrollingSpeed: 1000
+            });
+        });
+    </script>
+
 </head>
 <body>
 
+
+<select id="demosMenu">
+    <option selected>Choose Demo</option>
+    <option id="backgrounds">Background images</option>
+    <option id="backgroundVideo">Background video</option>
+    <option id="gradientBackgrounds">Gradient backgrounds</option>
+    <option id="backgroundsFixed">Fixed fullscreen backgrounds</option>
+    <option id="looping">Looping</option>
+    <option id="noAnchor">No anchor links</option>
+    <option id="scrollingSpeed">Scrolling speed</option>
+    <option id="easing">Easing</option>
+    <option id="callbacks">Callbacks</option>
+    <option id="css3">CSS3</option>
+    <option id="continuous">Continuous scrolling</option>
+    <option id="normalScroll">Normal scrolling</option>
+    <option id="scrollBar">Scroll bar enabled</option>
+    <option id="scrolling">Scroll inside sections and slides</option>
+    <option id="navigationV">Vertical navigation dots</option>
+    <option id="navigationH">Horizontal navigation dots</option>
+    <option id="fixedHeaders">Fixed headers</option>
+    <option id="apple">Apple iPhone demo (animations)</option>
+    <option id="oneSection">One single section</option>
+    <option id="responsiveHeight">Responsive Height</option>
+    <option id="responsiveWidth">Responsive Width</option>
+    <option id="responsiveAutoHeight">Responsive Auto Height</option>
+    <option id="autoHeight">Auto height</option>
+    <option id="methods">Methods</option>
+</select>
+
+<ul id="menu">
+    <li data-menuanchor="firstPage"><a href="#firstPage">Introduction</a></li>
+    <li data-menuanchor="secondPage"><a href="#secondPage">Data Exploration</a></li>
+    <li data-menuanchor="3rdPage"><a href="#3rdPage">Baseline Model</a></li>
+    <li data-menuanchor="4thpage"><a href="#4thpage">Improved Model</a></li>
+</ul>
+
+
 <div id="fullpage">
-    <div class="section">
-        <h1>Generating Amazon Food Reviews</h1>
-        <h2>Harrison Li, Thomas Jiang, Masahiro Kusunoki, Daniel Chen</h2>
-        <h3>CS109A Fall 2016</h3>
+
+    <div class="section " id="section0">
+        <h1>Recommending Amazon Products</h1>
+        <input type="hidden" name="id" value="1" />
+        <p>In this project, we are analyzing a dataset of ________ real user reviews in response to food-related purchases from Amazon. From this dataset, we want to develop an accurate method for recommending products for each user based on their past preferences.</p>
+        <img src="imgs/fullPage.png" alt="fullPage" />
     </div>
-    <div class="section">
-        <h1>Generating Amazon Food Reviews</h1>
-        <h2>Data Exploration</h2>
+
+    <div class="section" id="section1">
+        <div class="slide">
+            <div class="intro">
+                <h1>Data Exploration</h1>
+                <p>We conducted several initial explorations of the dataset in order to develop a better understanding of trends in the data.</p>
+                <img src="imgs/slider.png" alt="slider" />
+            </div>
+
+        </div>
+        <div class="slide">
+            <div class="intro">
+                <img src="imgs/1.png" alt="simple" />
+                <h1>Number of Users</h1>
+                <p>Explanation of plot.</p>
+            </div>
+        </div>
+        <div class="slide">
+            <div class="intro">
+                <img src="imgs/2.png" alt="Cool" />
+                <h1>Score vs Length</h1>
+                <p>Explanation of plot.</p>
+            </div>
+        </div>
+        <div class="slide">
+            <div class="intro">
+                <img src="imgs/3.png" alt="Compatible" />
+                <h1>Active Users vs Non Active</h1>
+                <p>Explanation of plot.</p>
+            </div>
+        </div>
     </div>
-    <div class="section">
-        <h1>Generating Amazon Food Reviews</h1>
-        <h2>Baseline Model</h2>
+
+    <div class="section" id="section2">
+        <div class="intro">
+            <h1>Baseline Example</h1>
+            <p>HTML markup example to define 4 sections.</p>
+            <img src="imgs/example2.png" alt="example" />
+        </div>
     </div>
-    <div class="section">
-        <h1>Generating Amazon Food Reviews</h1>
-        <h2>Improved Model</h2>
+
+    <div class="section" id="section3">
+        <div class="intro">
+            <h1>Improved Model</h1>
+            <p>
+                Designed to fit to different screen sizes as well as tablet and mobile devices.
+                <br /><br /><br /><br /><br /><br />
+            </p>
+        </div>
+        <img src="imgs/tablets.png" alt="tablets" />
     </div>
-    <div class="section">
-        <h1>Generating Amazon Food Reviews</h1>
-        <h2>Final Conclusions</h2>
-    </div>
+
 </div>
-
-
-<!-- Load JS libraries -->
-<!--<script src="js/queue.v1.min.js"></script>-->
-<script src="js/jquery.min.js"></script>
-<script src="js/bootstrap.min.js"></script>
-<script src="js/jquery.fullpage.min.js"></script>
-<script src="js/main.js"></script>
 
 </body>
 </html>
