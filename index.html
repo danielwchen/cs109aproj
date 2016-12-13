@@ -11,14 +11,14 @@
 
 
     <link rel="stylesheet" type="text/css" href="css/fullpagemin.css" />
-    <link rel="stylesheet" type="text/css" href="css/examples.css" />
+    <link rel="stylesheet" type="text/css" href="css/style.css" />
 
 
     <script src="js/jquery.min.js"></script>
     <script src="js/jquery-ui.min.js"></script>
 
     <script src="js/fullpagemin.js"></script>
-    <script src="js/examples.js"></script>
+    <script src="js/main.js"></script>
 </head>
 <body>
 
@@ -26,7 +26,8 @@
     <li data-menuanchor="firstPage"><a href="#firstPage">Introduction</a></li>
     <li data-menuanchor="secondPage"><a href="#secondPage">Data</a></li>
     <li data-menuanchor="3rdPage"><a href="#3rdPage">Exploration</a></li>
-    <li data-menuanchor="4thpage"><a href="#4thpage">Modeling</a></li>
+    <li data-menuanchor="4thPage"><a href="#4thPage">Modeling</a></li>
+    <li data-menuanchor="5thPage"><a href="#5thPage">Results</a></li>
     <li data-menuanchor="lastPage"><a href="#lastPage">Conclusion</a></li>
 </ul>
 
@@ -285,7 +286,8 @@
             <div class="intro">
                 <h1>Modeling</h1>
                 <p>
-                    We developed our final model in three steps. First, we created two baseline models to serve as our target to beat. Then, we developed a model for determining a products "true" score based on previous reviews by other users. Finally, we developed a method for calculating product similarity by review text, which we were then able to use to estimate user preferences.
+                    We developed our final model in three steps. First, we created two baseline models to serve as our target to beat. Then, we developed a model for determining a products "true" score based on previous reviews by other users. Finally, we developed a method for calculating product similarity by review text, which we were then able to use to estimate user preferences.<br>
+                    For modeling, the dataset, after all corrections discussed in the previous section, was split into a 70% training set and 30% testing set.
                 </p>
             </div>
         </div>
@@ -293,7 +295,53 @@
             <div class="intro">
                 <h3>Baseline Models</h3>
                 <p>
-                    We developed two baseline models, derived from a simple assumption. Our baseline model considers user bias to be the most important element, and does not require
+                    We developed two baseline models, derived from a simple assumption. Our baseline models assume users will vote according to their past average. Thus, both of our baseline models simply predict future ratings by assigning them the mean or median of the user's past reviews.
+                    <ul>
+                <li>
+                    User Median Model
+                    <ul>
+                        <li>RMSE = 1.289</li>
+                    </ul>
+                </li>
+                <li>
+                    User Mean Model
+                    <ul>
+                        <li>RMSE = 1.198</li>
+                    </ul>
+                </li>
+            </ul>
+                </p>
+            </div>
+        </div>
+        <div class="slide">
+            <div class="intro">
+                <h3>Improvement</h3>
+                <p>
+
+                </p>
+            </div>
+        </div>
+        <div class="slide">
+            <div class="intro">
+                <h3>Product-based Component</h3>
+                <p>
+
+                </p>
+            </div>
+        </div>
+        <div class="slide">
+            <div class="intro">
+                <h3>User-based Component</h3>
+                <p>
+
+                </p>
+            </div>
+        </div>
+        <div class="slide">
+            <div class="intro">
+                <h3>Final Model</h3>
+                <p>
+
                 </p>
             </div>
         </div>
@@ -301,9 +349,24 @@
 
     <div class="section" id="section4">
         <div class="intro">
-            <h1>Improved Model</h1>
+            <h1>Results</h1>
             <p>
-                Test
+                Tuning
+            </p>
+            <p>
+                Improvement over baseline
+            </p>
+        </div>
+    </div>
+
+    <div class="section" id="section5">
+        <div class="intro">
+            <h1>Conclusion</h1>
+            <p>
+                Tuning
+            </p>
+            <p>
+                Improvement over baseline
             </p>
         </div>
     </div>
