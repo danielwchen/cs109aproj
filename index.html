@@ -38,24 +38,46 @@
         <h2>Harrison Li, Thomas Jiang, Masahiro Kusunoki, Daniel Chen</h2>
         <h3>CS 109a Fall 2016</h3>
         <input type="hidden" name="id" value="1" />
-        <p>In this project, we are analyzing a dataset of ________ real user reviews in response to food-related purchases from Amazon. From this dataset, we want to develop an accurate method for recommending products for each user based on their past preferences.</p>
+        <p>The Amazon Fine Foods Dataset, collected and distributed by the Stanford Network Analysis Project, contains nearly 600,000 Amazon reviews of over 70,000 food and food-related products by over 250,000 users. With this data, we set out to develop a system for predicting future ratings based on a combination of product features and user characteristics. If successful, such a system could be used to develop an accurate recommendation system.</p>
         <!--<img src="imgs/fullPage.png" alt="fullPage" />-->
     </div>
 
     <div class="section" id="section1">
-        <h1>Our Data Sources</h1>
-        <p>Our data set consists of 568,454 reviews on 74,258 unique, food-related Amazon products, obtained from <a href="https://www.kaggle.com/snap/amazon-fine-food-reviews">Kaggle</a>. Each food review includes 10 pieces of information: <b>Id</b>, <b>ProductId, UserId</b>, <b>ProfileName</b>, <b>HelpfulnessNumerator</b>, <b>HelpfulnessDenominator</b>, <b>Score</b>, <b>Time</b>, <b>Summary</b>, and <b>Text</b>. From these reviews, we intend to produce a model for accurately predicting which new products each consumer would be happy with. This model will then be leveraged as a means of suggesting products to users.</p>
-        <p>In order to obtain meaningful features for the 74,258 products in the data set, we took advantage of the Amazon API. This API allowed us to look up the given ProductIds and return Product Groups and Ancestor Names, assigned by Amazon. For example, product _[insert id]_ returns product group _[insert]_ and ancestor _[insert]_.</p>
-        <!--Id-->
-        <!--ProductId - unique identifier for the product-->
-        <!--UserId - unqiue identifier for the user-->
-        <!--ProfileName-->
-        <!--HelpfulnessNumerator - number of users who found the review helpful-->
-        <!--HelpfulnessDenominator - number of users who indicated whether they found the review helpful-->
-        <!--Score - rating between 1 and 5-->
-        <!--Time - timestamp for the review-->
-        <!--Summary - brief summary of the review-->
-        <!--Text - text of the review-->
+        <div class="slide">
+            <div class="intro">
+                <h1>Data Sources:</h1>
+                <p>Our data set consists of 568,454 reviews on 74,258 food-related Amazon products by 217468 users. Each review includes UserId, ProductId, Score, and Text, as well as some other values (to see full list, with explanation, click the right arrow).</p>
+                <p>In order to obtain meaningful features for the 74,258 products in the data set, we took advantage of the Amazon API. This API allowed us to look up items by the ProductIds and return Product Groups. For example, product _[insert id]_ returns product group _[insert]_.</p>
+            </div>
+        </div>
+        <div class="slide">
+            <div class="intro">
+                <h2>Datasets</h2>
+                <ol>
+                    <li>
+                        Amazon Fine Foods Dataset
+                        <ul>
+                            <li>Id</li>
+                            <li>ProductId - unique identifier for the product</li>
+                            <li>UserId - unique identifier for the user</li>
+                            <li>ProfileName</li>
+                            <li>HelpfulnessNumerator - number of users who found the review helpful</li>
+                            <li>HelpfulnessDenominator - number of users who indicated whether they found the review helpful</li>
+                            <li>Score - rating between 1 and 5</li>
+                            <li>Time - timestamp for the review</li>
+                            <li>Summary - summary of review, written by user</li>
+                            <li>Text - full review text</li>
+                        </ul>
+                    </li>
+                    <li>
+                        Amazon API
+                        <ul>
+                            <li>Product Group - categorization of product defined by Amazon</li>
+                        </ul>
+                    </li>
+                </ol>
+            </div>
+        </div>
     </div>
 
     <div class="section" id="section2">
@@ -63,7 +85,6 @@
             <div class="intro">
                 <h1>Data Exploration</h1>
                 <p>We conducted several initial explorations of the dataset in order to develop a better understanding of trends in the data.</p>
-                <!--<img src="imgs/slider.png" alt="slider" />-->
             </div>
 
         </div>
@@ -260,17 +281,21 @@
     </div>
 
     <div class="section" id="section3">
-        <div class="intro">
-            <h1>Improved Model</h1>
-            <p>
-                This is an improved thing.
-                <br />
-                Test<br />
-                Test<br />
-                Test<br />
-                Test<br />
-                Test<br />
-            </p>
+        <div class="slide">
+            <div class="intro">
+                <h1>Modeling</h1>
+                <p>
+                    We developed our final model in three steps. First, we created two baseline models to serve as our target to beat. Then, we developed a model for determining a products "true" score based on previous reviews by other users. Finally, we developed a method for calculating product similarity by review text, which we were then able to use to estimate user preferences.
+                </p>
+            </div>
+        </div>
+        <div class="slide">
+            <div class="intro">
+                <h3>Baseline Models</h3>
+                <p>
+                    We developed two baseline models, derived from a simple assumption. Our baseline model considers user bias to be the most important element, and does not require
+                </p>
+            </div>
         </div>
     </div>
 
