@@ -10,7 +10,10 @@ a{
 	text-decoration:none;
 }
 table {
-    border-spacing: 0;
+    border-spacing: 2px;
+	/*border-width: 1px;*/
+	/*border-color: black;*/
+	background: white;
 }
 fieldset,img {
     border: 0;
@@ -59,10 +62,15 @@ body{
 	position: relative;
 }
 h1{
-	font-size: 6em;
+	font-size: 5em;
 }
+h2{
+	font-size: 3em;
+}
+
 p{
 	font-size: 2em;
+	padding-bottom: 10px;
 }
 .intro p{
 	width: 50%;
@@ -257,7 +265,7 @@ p{
 	margin-left: -420px;
 }
 .intro p{
-	width: 50%;
+	width: 80%;
 	margin: 0 auto;
 	font-size: 1.5em;
 }
@@ -267,4 +275,7 @@ p{
 	right: 149px;
 	top: 9px;
 }
-
+body{
+	text-align:center;
+	align-items:center;
+}

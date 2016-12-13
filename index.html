@@ -12,27 +12,53 @@
 
     <link rel="stylesheet" type="text/css" href="css/jquery.fullPage.min.css" />
     <link rel="stylesheet" type="text/css" href="css/examples.css" />
+
+
+    <script src="js/jquery.min.js"></script>
+    <script src="js/jquery-ui.min.js"></script>
+
+    <script src="js/jquery.fullPage.min.js"></script>
+    <script src="js/examples.js"></script>
 </head>
 <body>
 
 <ul id="menu">
     <li data-menuanchor="firstPage"><a href="#firstPage">Introduction</a></li>
-    <li data-menuanchor="secondPage"><a href="#secondPage">Data Exploration</a></li>
-    <li data-menuanchor="3rdPage"><a href="#3rdPage">Baseline Model</a></li>
-    <li data-menuanchor="4thpage"><a href="#4thpage">Improved Model</a></li>
+    <li data-menuanchor="secondPage"><a href="#secondPage">Data</a></li>
+    <li data-menuanchor="3rdPage"><a href="#3rdPage">Exploration</a></li>
+    <li data-menuanchor="4thpage"><a href="#4thpage">Modeling</a></li>
+    <li data-menuanchor="lastPage"><a href="#lastPage">Conclusion</a></li>
 </ul>
 
 
 <div id="fullpage">
 
     <div class="section " id="section0">
-        <h1>Recommending Amazon Products</h1>
+        <h1>Developing Amazon Recommendations</h1>
+        <h2>Harrison Li, Thomas Jiang, Masahiro Kusunoki, Daniel Chen</h2>
+        <h3>CS 109a Fall 2016</h3>
         <input type="hidden" name="id" value="1" />
         <p>In this project, we are analyzing a dataset of ________ real user reviews in response to food-related purchases from Amazon. From this dataset, we want to develop an accurate method for recommending products for each user based on their past preferences.</p>
         <!--<img src="imgs/fullPage.png" alt="fullPage" />-->
     </div>
 
     <div class="section" id="section1">
+        <h1>Our Data Sources</h1>
+        <p>Our data set consists of 568,454 reviews on 74,258 unique, food-related Amazon products, obtained from <a href="https://www.kaggle.com/snap/amazon-fine-food-reviews">Kaggle</a>. Each food review includes 10 pieces of information: <b>Id</b>, <b>ProductId, UserId</b>, <b>ProfileName</b>, <b>HelpfulnessNumerator</b>, <b>HelpfulnessDenominator</b>, <b>Score</b>, <b>Time</b>, <b>Summary</b>, and <b>Text</b>. From these reviews, we intend to produce a model for accurately predicting which new products each consumer would be happy with. This model will then be leveraged as a means of suggesting products to users.</p>
+        <p>In order to obtain meaningful features for the 74,258 products in the data set, we took advantage of the Amazon API. This API allowed us to look up the given ProductIds and return Product Groups and Ancestor Names, assigned by Amazon. For example, product _[insert id]_ returns product group _[insert]_ and ancestor _[insert]_.</p>
+        <!--Id-->
+        <!--ProductId - unique identifier for the product-->
+        <!--UserId - unqiue identifier for the user-->
+        <!--ProfileName-->
+        <!--HelpfulnessNumerator - number of users who found the review helpful-->
+        <!--HelpfulnessDenominator - number of users who indicated whether they found the review helpful-->
+        <!--Score - rating between 1 and 5-->
+        <!--Time - timestamp for the review-->
+        <!--Summary - brief summary of the review-->
+        <!--Text - text of the review-->
+    </div>
+
+    <div class="section" id="section2">
         <div class="slide">
             <div class="intro">
                 <h1>Data Exploration</h1>
@@ -43,32 +69,193 @@
         </div>
         <div class="slide">
             <div class="intro">
-                <!--<img src="imgs/1.png" alt="simple" />-->
-                <h1>Number of Users</h1>
-                <p>Explanation of plot.</p>
+                <h1>How People Review Products</h1>
+                <p>First, we explored distributions of ratings. This allowed us to learn how sparse the data set was. A data set where every user reviewed a majority of the products and each product would have a large number of reviews would be ideal for modeling, but this will turn out not to be the case. Instead, this is an informative method for understanding what data will have to be filtered out and what data can be used directly from the data set.</p>
             </div>
         </div>
         <div class="slide">
             <div class="intro">
-                <!--<img src="imgs/2.png" alt="Cool" />-->
-                <h1>Score vs Length</h1>
-                <p>Explanation of plot.</p>
+                <h2>Score Distribution</h2>
+                <img src="img/scores.png">
+                <p>Interestingly, a large majority (63.9%) of the ratings given by users across all products are 5 out of 5, while negative ratings (defined as 3 stars or less) constitute only 22% of all ratings.  The heavy skew towards 5 star ratings might present a challenge in distinguishing between products or users.
+                </p>
+                <table border="1" align="center">
+                    <tr>
+                        <td>
+                            <b>Score:</b>
+                        </td>
+                        <td>
+                            1
+                        </td>
+                        <td>
+                            2
+                        </td>
+                        <td>
+                            3
+                        </td>
+                        <td>
+                            4
+                        </td>
+                        <td>
+                            5
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <b>Percent:</b>
+                        </td>
+                        <td>
+                            9.19%
+                        </td>
+                        <td>
+                            5.24%
+                        </td>
+                        <td>
+                            7.50%
+                        </td>
+                        <td>
+                            14.19%
+                        </td>
+                        <td>
+                            63.88%
+                        </td>
+                    </tr>
+                </table>
             </div>
         </div>
         <div class="slide">
             <div class="intro">
-                <!--<img src="imgs/3.png" alt="Compatible" />-->
-                <h1>Active Users vs Non Active</h1>
-                <p>Explanation of plot.</p>
+                <h2>User Activity</h2>
+                <img src="img/numreviews.png">
+                <p>Breaking down the users by number of reviews, it's clear that the vast majority of users review very few products. In fact, out of the 256059 unique users, over half of them only have one review! Since it is impossible to create a robust model with only a single data point for each user, we will need to filter for "active users", which we will define as users with greater than _____ reviews.</p>
+                <table border="1" align="center">
+                    <tr>
+                        <td>
+                            <b>Metric:</b>
+                        </td>
+                        <td>
+                            Min Num of Reviews
+                        </td>
+                        <td>
+                            First Quartile
+                        </td>
+                        <td>
+                            Median
+                        </td>
+                        <td>
+                            Third Quartile
+                        </td>
+                        <td>
+                            Max Num of Reviews
+                        </td>
+                        <td>
+                            Mean
+                        </td>
+                        <td>
+                            Count
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <b>Value:</b>
+                        </td>
+                        <td>
+                            1
+                        </td>
+                        <td>
+                            1
+                        </td>
+                        <td>
+                            1
+                        </td>
+                        <td>
+                            2
+                        </td>
+                        <td>
+                            448
+                        </td>
+                        <td>
+                            2.22
+                        </td>
+                        <td>
+                            256059
+                        </td>
+                    </tr>
+                </table>
             </div>
         </div>
-    </div>
-
-    <div class="section" id="section2">
-        <div class="intro">
-            <h1>Baseline Example</h1>
-            <p>This is our baseline.</p>
-            <!--<img src="imgs/example2.png" alt="example" />-->
+        <div class="slide">
+            <div class="intro">
+                <h2>Products by Number of Reviews</h2>
+                <img src="img/numreviewsforprod.png">
+                <p>Once again, we see that the majority of products have only been reviewed a small number of times. Out of the 74258 unique products, half have been reviewed two or fewer times. This indicates that we cannot simply use each product's score to assign a quality to it. Instead, we will either have to filter out products with too few reviews or use a prior to properly score products based on user ratings.</p>
+                <table border="1" align="center">
+                    <tr>
+                        <td>
+                            <b>Metric:</b>
+                        </td>
+                        <td>
+                            Min Num of Reviews
+                        </td>
+                        <td>
+                            First Quartile
+                        </td>
+                        <td>
+                            Median
+                        </td>
+                        <td>
+                            Third Quartile
+                        </td>
+                        <td>
+                            Max Num of Reviews
+                        </td>
+                        <td>
+                            Mean
+                        </td>
+                        <td>
+                            Count
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <b>Value:</b>
+                        </td>
+                        <td>
+                            1
+                        </td>
+                        <td>
+                            1
+                        </td>
+                        <td>
+                            2
+                        </td>
+                        <td>
+                            3
+                        </td>
+                        <td>
+                            913
+                        </td>
+                        <td>
+                            7.66
+                        </td>
+                        <td>
+                            74258
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <div class="slide">
+            <div class="intro">
+                <h1>Text Analysis of Reviews</h1>
+                <p>We also did some exploration of the actual text left by each user. Ideally, we would like to use text reviews in potentially two ways. We can try to model similarities between customers based on their word choices or extract similarities between products based on what people say about them.</p>
+            </div>
+        </div>
+        <div class="slide">
+            <div class="intro">
+                <h2>Word Count</h2>
+                <img src="img/wordcount.png">
+            </div>
         </div>
     </div>
 
@@ -85,32 +272,18 @@
                 Test<br />
             </p>
         </div>
-        <!--<img src="imgs/tablets.png" alt="tablets" />-->
+    </div>
+
+    <div class="section" id="section4">
+        <div class="intro">
+            <h1>Improved Model</h1>
+            <p>
+                Test
+            </p>
+        </div>
     </div>
 
 </div>
-
-<script src="js/jquery.min.js"></script>
-<script src="js/jquery-ui.min.js"></script>
-
-<script src="js/jquery.fullPage.min.js"></script>
-<script src="js/examples.js"></script>
-
-<script>
-    $(document).ready(function(){
-        $("#demosMenu").change(function(){
-            window.location.href = $(this).find("option:selected").attr("id") + '.html';
-        });
-    });
-    $(document).ready(function() {
-        $('#fullpage').fullpage({
-            sectionsColor: ['#1bbc9b', '#4BBFC3', '#7BAABE', 'whitesmoke', '#ccddff'],
-            anchors: ['firstPage', 'secondPage', '3rdPage', '4thpage', 'lastPage'],
-            menu: '#menu',
-            scrollingSpeed: 1000
-        });
-    });
-</script>
 
 </body>
 </html>
