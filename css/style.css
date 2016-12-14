@@ -83,11 +83,11 @@ p {
 }
 
 #tuning{
-    width: 50%;
+    width: 75%;
 }
 
 #rmsered{
-    width: 40%;
+    /*width: 40%;*/
 }
 
 .intro p{
@@ -165,4 +165,16 @@ p {
 body{
     text-align:center;
     align-items:center;
+}
+
+.fp-controlArrow.fp-prev{
+    border-color: transparent #000 transparent transparent;
+    opacity: 0.4;
+    border-width: 50px 45px 50px 0;
+}
+
+.fp-controlArrow.fp-next{
+    border-color: transparent transparent transparent #000;
+    opacity: 0.4;
+    border-width: 50px 0 45px 50px;
 }

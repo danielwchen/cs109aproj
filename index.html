@@ -404,13 +404,22 @@
     </div>
 
     <div class="section" id="section4">
-        <div class="intro">
-            <h1>Results</h1>
-            <h3>Tuning</h3>
-            <img src="img/tuning.png" id="tuning">
-            <h3>Improvement over baseline</h3>
-            <img src="img/rmsered.png" id="rmsered">
-            <p>As shown above, our final model manages to beat both of our baseline models by customizing our predictions based on a combination of user preferences for each product, as well as the inherent quality of the products being reviewed.</p>
+        <div class="slide">
+            <div class="intro">
+                <h1>Results</h1>
+                <h3>Tuning</h3>
+                <img src="img/tuning.png" id="tuning">
+                <p>We tune the α and β parameters of the model by using KFold Validation (K=5). Plotting the RMSE scores, we see that this is more sensitive to changes in β, while α seems to have a small effect. We choose the optimal scores with  α = 1 and β = 0.9
+
+                </p>
+            </div>
+        </div>
+        <div class="slide">
+            <div class="intro">
+                <h3>Improvement over baseline</h3>
+                <img src="img/rmsered.png" id="rmsered">
+                <p>As shown above, our final model manages to beat both of our baseline models by customizing our predictions based on a combination of user preferences for each product, as well as the inherent quality of the products being reviewed.</p>
+            </div>
         </div>
     </div>
 
