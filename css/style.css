@@ -69,6 +69,7 @@ body{
 h1 {
     font-size: 55px;
     font-weight: bold;
+    padding-bottom: 15px;
 }
 h2 {
     font-size: 40px;
@@ -78,13 +79,21 @@ h3 {
 }
 
 p {
-    font-size: 1em;
+    font-size: 17px;
+}
+
+#tuning{
+    width: 50%;
+}
+
+#rmsered{
+    width: 40%;
 }
 
 .intro p{
     width: 50%;
     margin: 0 auto;
-    font-size: 1.5em;
+    font-size: 17px;
 }
 .section{
     text-align:center;
@@ -151,7 +160,7 @@ p {
 .intro p{
     width: 80%;
     margin: 0 auto;
-    font-size: 1em;
+    font-size: 17px;
 }
 body{
     text-align:center;
