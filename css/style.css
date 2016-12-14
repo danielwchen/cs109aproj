@@ -90,6 +90,10 @@ p {
     /*width: 40%;*/
 }
 
+.component{
+    width: 75%;
+}
+
 .intro p{
     width: 50%;
     margin: 0 auto;
