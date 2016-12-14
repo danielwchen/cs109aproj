@@ -50,7 +50,7 @@
                 <h1>Data Sources:</h1>
                 <p>Our data set consists of 568,454 reviews on 74,258 food-related Amazon products by 217468 users. Each review includes UserId, ProductId, Score, and Text, as well as some other values (to see full list, with explanation, click the right arrow).</p>
                 <p>In order to obtain meaningful features for the 74,258 products in the data set, we took advantage of the Amazon API. This API allowed us to look up items by the ProductIds and return Product Groups. For example, product <b>B003XUL27E</b>, a product named <b>Healthy Choice All Natural Red Beans & Rice, 14-Ounce Containers (Pack of 6)</b>, returns product group <b>Grocery</b>.<br><br>
-                Click right to see individual features in our Data Sources</p>
+                Click the right arrow to see individual features in our Data Sources</p>
             </div>
         </div>
         <div class="slide">
@@ -88,7 +88,7 @@
             <div class="intro">
                 <h1>Data Exploration</h1>
                 <p>As with any real world dataset, the Amazon Fine Foods Dataset contained many peculiarities. We corrected for the first four observations during our modeling. Though the remaining two did not inform our model, we present them as curiosities that would be interesting to explore in future work.<br><br>
-                Click right to see individual observations from our exploration.</p>
+                Click the right arrow to see individual observations from our exploration.</p>
                 <!--<h3>Main Conclusions</h3>-->
                 <!--<p>Though our dataset contains nearly 600,000 reviews and over 250,000 users, many users rate very few products. The median user has only rated a single product. These users cause a problem when building, training, and testing a content based recommendation system. Because our model would like to incorporate user preferences into the model. However, it is extremely difficult to do this properly if there is only one datapoint for a user, which would either fall into the training or the test set but not both. Since each user is treated as independent of other users, over sampling these users would not be a feasible solution. Thus, we decided to cut out all users who reviewed fewer than a certain threshold of products (n = 5). This eliminated more than half of the users.</p>-->
 
@@ -342,7 +342,7 @@
                     We developed our final model in three steps. First, we created two baseline models to serve as our target to beat. Then, we developed a model for determining a products "true" score based on previous reviews by other users. Finally, we developed a method for calculating product similarity by review text, which we were then able to use to estimate user preferences.<br>
                     For modeling, the dataset, after all corrections discussed in the previous section, was split into a 70% training set and 30% testing set.
                     <br><br>
-                    Click right to see how we developed our final model.</p>
+                    Click the right arrow to see how we developed our final model.</p>
                 </p>
             </div>
         </div>
@@ -413,7 +413,7 @@
                 <h1>Results</h1>
                 <p>We take the final model developed above, and tune the weighting parameters (α and β) to find our optimal model. We use KFold Validation on the original training dataset, we compute and plot RMSE scores to understand the impacts of the different weights. We then apply our optimal model onto the testing dataset.
                     <br><br>
-                Click right to see our tuning process and final results.
+                Click the right arrow to see our tuning process and final results.
                 </p>
             </div>
         </div>
