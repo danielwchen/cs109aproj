@@ -9,7 +9,7 @@
     <meta name="keywords"  content="" />
     <meta name="Resource-type" content="Document" />
 
-
+    <link href="https://fonts.googleapis.com/css?family=Lato:300|Lustria" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="css/fullpagemin.css" />
     <link rel="stylesheet" type="text/css" href="css/style.css" />
 
@@ -36,9 +36,10 @@
 
     <div class="section " id="section0">
         <h1>Developing Amazon Recommendations</h1>
-        <h2>Harrison Li, Thomas Jiang, Masahiro Kusunoki, Daniel Chen</h2>
+        <h3>By Harrison Li, Thomas Jiang, Masahiro Kusunoki, Daniel Chen</h3>
         <h3>CS 109a Fall 2016</h3>
         <input type="hidden" name="id" value="1" />
+
         <p>The Amazon Fine Foods Dataset, collected and distributed by the Stanford Network Analysis Project, contains nearly 600,000 Amazon reviews of over 70,000 food and food-related products by over 250,000 users. With this data, we set out to develop a system for predicting future ratings based on a combination of product features and user characteristics. If successful, such a system could be used to develop an accurate recommendation system.</p>
         <!--<img src="imgs/fullPage.png" alt="fullPage" />-->
     </div>
@@ -48,7 +49,7 @@
             <div class="intro">
                 <h1>Data Sources:</h1>
                 <p>Our data set consists of 568,454 reviews on 74,258 food-related Amazon products by 217468 users. Each review includes UserId, ProductId, Score, and Text, as well as some other values (to see full list, with explanation, click the right arrow).</p>
-                <p>In order to obtain meaningful features for the 74,258 products in the data set, we took advantage of the Amazon API. This API allowed us to look up items by the ProductIds and return Product Groups. For example, product _[insert id]_ returns product group _[insert]_.</p>
+                <p>In order to obtain meaningful features for the 74,258 products in the data set, we took advantage of the Amazon API. This API allowed us to look up items by the ProductIds and return Product Groups. For example, product <b>B003XUL27E</b>, a product named <b>Healthy Choice All Natural Red Beans & Rice, 14-Ounce Containers (Pack of 6)</b>, returns product group <b>Grocery</b>.</p>
             </div>
         </div>
         <div class="slide">
@@ -85,200 +86,250 @@
         <div class="slide">
             <div class="intro">
                 <h1>Data Exploration</h1>
-                <p>We conducted several initial explorations of the dataset in order to develop a better understanding of trends in the data.</p>
-            </div>
+                <p>As with any real world dataset, the Amazon Fine Foods Dataset contained many peculiarities. We corrected for the first four observations during our modeling. Though the remaining two did not inform our model, we present them as curiosities that would be interesting to explore in future work.</p>
+                <h3>Main Conclusions</h3>
+                <p>Though our dataset contains nearly 600,000 reviews and over 250,000 users, many users rate very few products. The median user has only rated a single product. These users cause a problem when building, training, and testing a content based recommendation system. Because our model would like to incorporate user preferences into the model. However, it is extremely difficult to do this properly if there is only one datapoint for a user, which would either fall into the training or the test set but not both. Since each user is treated as independent of other users, over sampling these users would not be a feasible solution. Thus, we decided to cut out all users who reviewed fewer than a certain threshold of products (n = 5). This eliminated more than half of the users.</p>
 
-        </div>
-        <div class="slide">
-            <div class="intro">
-                <h1>How People Review Products</h1>
-                <p>First, we explored distributions of ratings. This allowed us to learn how sparse the data set was. A data set where every user reviewed a majority of the products and each product would have a large number of reviews would be ideal for modeling, but this will turn out not to be the case. Instead, this is an informative method for understanding what data will have to be filtered out and what data can be used directly from the data set.</p>
+
+                <p>Next, we looked at the remaining users and their reviews. We found that many of these “active users” seem like bots or paid reviewers. These are users who left identical reviews on various similar products in a very short time span. We believe these reviews to be a poor representation of the average user. We believed that including these reviewers would both affect our model and cause our model to give unrepresentative results. Additionally, we believe that including these reviews and predicting for these users would affect our baseline and model performance. Thus, we eliminated these reviews, which accounted for nearly half of the reviews.</p>
+
+
+                <p>Next, because our dataset did not include features of products, in order to create a content based prediction system, we needed to identify some features in order to create the required similarity matrix. First, we used the Amazon Advertising API to collect more data on the over 70,000 products. This included the product name and product group (Grocery, Snack Food, etc.). However, for many products, the Amazon APi no longer recognized the Product ID. This suggests that these products are no longer being sold or stocked by Amazon. This makes sense given that the dataset only contains reviews from Oct 1999 - Oct 2012. Additionally, we collected the product reviews for that product and vectorized the reviews to generate more features. At this point,we moved on to our modeling step.</p>
             </div>
         </div>
         <div class="slide">
             <div class="intro">
-                <h2>Score Distribution</h2>
-                <img src="img/scores.png">
-                <p>Interestingly, a large majority (63.9%) of the ratings given by users across all products are 5 out of 5, while negative ratings (defined as 3 stars or less) constitute only 22% of all ratings.  The heavy skew towards 5 star ratings might present a challenge in distinguishing between products or users.
-                </p>
-                <table border="1" align="center">
-                    <tr>
-                        <td>
-                            <b>Score:</b>
-                        </td>
-                        <td>
-                            1
-                        </td>
-                        <td>
-                            2
-                        </td>
-                        <td>
-                            3
-                        </td>
-                        <td>
-                            4
-                        </td>
-                        <td>
-                            5
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <b>Percent:</b>
-                        </td>
-                        <td>
-                            9.19%
-                        </td>
-                        <td>
-                            5.24%
-                        </td>
-                        <td>
-                            7.50%
-                        </td>
-                        <td>
-                            14.19%
-                        </td>
-                        <td>
-                            63.88%
-                        </td>
-                    </tr>
-                </table>
+                <h2>1. Duplicates</h2>
+                <img src="img/duplicates.png" width="300px">
+                <p>While exploring reviews, we found that several reviews had identical text, scores, user IDs, and timestamps on similar products. This does not seem to suggest a human user, and we hypothesize that these reviewers were left by bots. Including these bots would improve our RMSE (as bots are extremely easy to predict since they continually give identical scores), but for the sake of applicability to human users, we decided to filter out all such reviews, eliminating almost half of all reviews.</p>
             </div>
         </div>
         <div class="slide">
             <div class="intro">
-                <h2>User Activity</h2>
-                <img src="img/numreviews.png">
-                <p>Breaking down the users by number of reviews, it's clear that the vast majority of users review very few products. In fact, out of the 256059 unique users, over half of them only have one review! Since it is impossible to create a robust model with only a single data point for each user, we will need to filter for "active users", which we will define as users with greater than _____ reviews.</p>
-                <table border="1" align="center">
-                    <tr>
-                        <td>
-                            <b>Metric:</b>
-                        </td>
-                        <td>
-                            Min Num of Reviews
-                        </td>
-                        <td>
-                            First Quartile
-                        </td>
-                        <td>
-                            Median
-                        </td>
-                        <td>
-                            Third Quartile
-                        </td>
-                        <td>
-                            Max Num of Reviews
-                        </td>
-                        <td>
-                            Mean
-                        </td>
-                        <td>
-                            Count
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <b>Value:</b>
-                        </td>
-                        <td>
-                            1
-                        </td>
-                        <td>
-                            1
-                        </td>
-                        <td>
-                            1
-                        </td>
-                        <td>
-                            2
-                        </td>
-                        <td>
-                            448
-                        </td>
-                        <td>
-                            2.22
-                        </td>
-                        <td>
-                            256059
-                        </td>
-                    </tr>
-                </table>
+                <h2>2. Number of Reviews by Reviewer</h2>
+                <img src="img/numreviews.png" height="330px"><img src="img/numreviewsperusers.png" height="330px">
+                <p>This compares the number of active users, which we define to be users with 5 or more ratings, to the number of inactive users. Inactive users do not have enough ratings for us to accurately judge their product preferences, and therefore our model also removes them when training on our dataset.</p>
             </div>
         </div>
         <div class="slide">
             <div class="intro">
-                <h2>Products by Number of Reviews</h2>
-                <img src="img/numreviewsforprod.png">
-                <p>Once again, we see that the majority of products have only been reviewed a small number of times. Out of the 74258 unique products, half have been reviewed two or fewer times. This indicates that we cannot simply use each product's score to assign a quality to it. Instead, we will either have to filter out products with too few reviews or use a prior to properly score products based on user ratings.</p>
-                <table border="1" align="center">
-                    <tr>
-                        <td>
-                            <b>Metric:</b>
-                        </td>
-                        <td>
-                            Min Num of Reviews
-                        </td>
-                        <td>
-                            First Quartile
-                        </td>
-                        <td>
-                            Median
-                        </td>
-                        <td>
-                            Third Quartile
-                        </td>
-                        <td>
-                            Max Num of Reviews
-                        </td>
-                        <td>
-                            Mean
-                        </td>
-                        <td>
-                            Count
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <b>Value:</b>
-                        </td>
-                        <td>
-                            1
-                        </td>
-                        <td>
-                            1
-                        </td>
-                        <td>
-                            2
-                        </td>
-                        <td>
-                            3
-                        </td>
-                        <td>
-                            913
-                        </td>
-                        <td>
-                            7.66
-                        </td>
-                        <td>
-                            74258
-                        </td>
-                    </tr>
-                </table>
+                <h2>3. Number of Reviews by Product</h2>
+                <img src="img/numreviewsforprod.png" height="330px"><img src="img/numreviewsperprod.png" height="330px">
+                <p>Compounding the sparsity of user ratings, each product also generally have very few ratings. With so few reviews, it's difficult to accurately judge product similarity using just the Fine Food Dataset, motivating us to use the Amazon API to provide additional product features.</p>
             </div>
         </div>
         <div class="slide">
             <div class="intro">
-                <h1>Text Analysis of Reviews</h1>
-                <p>We also did some exploration of the actual text left by each user. Ideally, we would like to use text reviews in potentially two ways. We can try to model similarities between customers based on their word choices or extract similarities between products based on what people say about them.</p>
+                <h2>4. Helpfulness Skew</h2>
+                <img src="img/helpfulness.png" width="600px">
+                <p>The data provides both helpfulness numerator and denominator. The ratio of the two gives the percent of readers who find each review to be helpful. It's clear that once again, most reviews have very few helpfulness ratings. A rating of 1 out of 1 or 0 out of 1 is not dramatically significant, so when using helpfulness as a proxy for estimating review quality, we assigned a 1, 1 beta prior.</p>
             </div>
         </div>
         <div class="slide">
             <div class="intro">
-                <h2>Word Count</h2>
-                <img src="img/wordcount.png">
+                <h2>5. Score Skew</h2>
+                <img src="img/scoreswodup.png" height="330px"><img src="img/scorespie.png" height="330px">
+                <p>Interestingly, a large majority (63.9%) of the ratings given by users across all products are 5 out of 5, while negative ratings (defined as 3 stars or less) constitute only 22% of all ratings. We did not correct for this phenomenon since we treat the scores as quantitative values instead of categorical, but it is reflected by predicted values also yielding a high average.</p>
             </div>
         </div>
+        <div class="slide">
+            <div class="intro">
+                <h2>6. Time Drift</h2>
+                <img src="img/time.png">
+                <p>Scores seem to improve over time throughout the dataset. We do not yet have a robust explanation of this phenomenon, but it could potentially be accounted for by a more complex model.</p>
+            </div>
+        </div>
+
+        <!--<div class="slide">-->
+            <!--<div class="intro">-->
+                <!--<h1>How People Review Products</h1>-->
+                <!--<p>First, we explored distributions of ratings. This allowed us to learn how sparse the data set was. A data set where every user reviewed a majority of the products and each product would have a large number of reviews would be ideal for modeling, but this will turn out not to be the case. Instead, this is an informative method for understanding what data will have to be filtered out and what data can be used directly from the data set.</p>-->
+            <!--</div>-->
+        <!--</div>-->
+        <!--<div class="slide">-->
+            <!--<div class="intro">-->
+                <!--<h2>Score Distribution</h2>-->
+                <!--<img src="img/scores.png">-->
+                <!--<p>Interestingly, a large majority (63.9%) of the ratings given by users across all products are 5 out of 5, while negative ratings (defined as 3 stars or less) constitute only 22% of all ratings.  The heavy skew towards 5 star ratings might present a challenge in distinguishing between products or users.-->
+                <!--</p>-->
+                <!--<table border="1" align="center">-->
+                    <!--<tr>-->
+                        <!--<td>-->
+                            <!--<b>Score:</b>-->
+                        <!--</td>-->
+                        <!--<td>-->
+                            <!--1-->
+                        <!--</td>-->
+                        <!--<td>-->
+                            <!--2-->
+                        <!--</td>-->
+                        <!--<td>-->
+                            <!--3-->
+                        <!--</td>-->
+                        <!--<td>-->
+                            <!--4-->
+                        <!--</td>-->
+                        <!--<td>-->
+                            <!--5-->
+                        <!--</td>-->
+                    <!--</tr>-->
+                    <!--<tr>-->
+                        <!--<td>-->
+                            <!--<b>Percent:</b>-->
+                        <!--</td>-->
+                        <!--<td>-->
+                            <!--9.19%-->
+                        <!--</td>-->
+                        <!--<td>-->
+                            <!--5.24%-->
+                        <!--</td>-->
+                        <!--<td>-->
+                            <!--7.50%-->
+                        <!--</td>-->
+                        <!--<td>-->
+                            <!--14.19%-->
+                        <!--</td>-->
+                        <!--<td>-->
+                            <!--63.88%-->
+                        <!--</td>-->
+                    <!--</tr>-->
+                <!--</table>-->
+            <!--</div>-->
+        <!--</div>-->
+        <!--<div class="slide">-->
+            <!--<div class="intro">-->
+                <!--<h2>User Activity</h2>-->
+                <!--<img src="img/numreviews.png">-->
+                <!--<p>Breaking down the users by number of reviews, it's clear that the vast majority of users review very few products. In fact, out of the 256059 unique users, over half of them only have one review! Since it is impossible to create a robust model with only a single data point for each user, we will need to filter for "active users", which we will define as users with greater than _____ reviews.</p>-->
+                <!--<table border="1" align="center">-->
+                    <!--<tr>-->
+                        <!--<td>-->
+                            <!--<b>Metric:</b>-->
+                        <!--</td>-->
+                        <!--<td>-->
+                            <!--Min Num of Reviews-->
+                        <!--</td>-->
+                        <!--<td>-->
+                            <!--First Quartile-->
+                        <!--</td>-->
+                        <!--<td>-->
+                            <!--Median-->
+                        <!--</td>-->
+                        <!--<td>-->
+                            <!--Third Quartile-->
+                        <!--</td>-->
+                        <!--<td>-->
+                            <!--Max Num of Reviews-->
+                        <!--</td>-->
+                        <!--<td>-->
+                            <!--Mean-->
+                        <!--</td>-->
+                        <!--<td>-->
+                            <!--Count-->
+                        <!--</td>-->
+                    <!--</tr>-->
+                    <!--<tr>-->
+                        <!--<td>-->
+                            <!--<b>Value:</b>-->
+                        <!--</td>-->
+                        <!--<td>-->
+                            <!--1-->
+                        <!--</td>-->
+                        <!--<td>-->
+                            <!--1-->
+                        <!--</td>-->
+                        <!--<td>-->
+                            <!--1-->
+                        <!--</td>-->
+                        <!--<td>-->
+                            <!--2-->
+                        <!--</td>-->
+                        <!--<td>-->
+                            <!--448-->
+                        <!--</td>-->
+                        <!--<td>-->
+                            <!--2.22-->
+                        <!--</td>-->
+                        <!--<td>-->
+                            <!--256059-->
+                        <!--</td>-->
+                    <!--</tr>-->
+                <!--</table>-->
+            <!--</div>-->
+        <!--</div>-->
+        <!--<div class="slide">-->
+            <!--<div class="intro">-->
+                <!--<h2>Products by Number of Reviews</h2>-->
+                <!--<img src="img/numreviewsforprod.png">-->
+                <!--<p>Once again, we see that the majority of products have only been reviewed a small number of times. Out of the 74258 unique products, half have been reviewed two or fewer times. This indicates that we cannot simply use each product's score to assign a quality to it. Instead, we will either have to filter out products with too few reviews or use a prior to properly score products based on user ratings.</p>-->
+                <!--<table border="1" align="center">-->
+                    <!--<tr>-->
+                        <!--<td>-->
+                            <!--<b>Metric:</b>-->
+                        <!--</td>-->
+                        <!--<td>-->
+                            <!--Min Num of Reviews-->
+                        <!--</td>-->
+                        <!--<td>-->
+                            <!--First Quartile-->
+                        <!--</td>-->
+                        <!--<td>-->
+                            <!--Median-->
+                        <!--</td>-->
+                        <!--<td>-->
+                            <!--Third Quartile-->
+                        <!--</td>-->
+                        <!--<td>-->
+                            <!--Max Num of Reviews-->
+                        <!--</td>-->
+                        <!--<td>-->
+                            <!--Mean-->
+                        <!--</td>-->
+                        <!--<td>-->
+                            <!--Count-->
+                        <!--</td>-->
+                    <!--</tr>-->
+                    <!--<tr>-->
+                        <!--<td>-->
+                            <!--<b>Value:</b>-->
+                        <!--</td>-->
+                        <!--<td>-->
+                            <!--1-->
+                        <!--</td>-->
+                        <!--<td>-->
+                            <!--1-->
+                        <!--</td>-->
+                        <!--<td>-->
+                            <!--2-->
+                        <!--</td>-->
+                        <!--<td>-->
+                            <!--3-->
+                        <!--</td>-->
+                        <!--<td>-->
+                            <!--913-->
+                        <!--</td>-->
+                        <!--<td>-->
+                            <!--7.66-->
+                        <!--</td>-->
+                        <!--<td>-->
+                            <!--74258-->
+                        <!--</td>-->
+                    <!--</tr>-->
+                <!--</table>-->
+            <!--</div>-->
+        <!--</div>-->
+        <!--<div class="slide">-->
+            <!--<div class="intro">-->
+                <!--<h1>Text Analysis of Reviews</h1>-->
+                <!--<p>We also did some exploration of the actual text left by each user. Ideally, we would like to use text reviews in potentially two ways. We can try to model similarities between customers based on their word choices or extract similarities between products based on what people say about them.</p>-->
+            <!--</div>-->
+        <!--</div>-->
+        <!--<div class="slide">-->
+            <!--<div class="intro">-->
+                <!--<h2>Word Count</h2>-->
+                <!--<img src="img/wordcount.png">-->
+            <!--</div>-->
+        <!--</div>-->
     </div>
 
     <div class="section" id="section3">
@@ -293,7 +344,7 @@
         </div>
         <div class="slide">
             <div class="intro">
-                <h3>Baseline Models</h3>
+                <h2>Baseline Models</h2>
                 <p>
                     We developed two baseline models, derived from a simple assumption. Our baseline models assume users will vote according to their past average. Thus, both of our baseline models simply predict future ratings by assigning them the mean or median of the user's past reviews.
                     <ul>
@@ -315,33 +366,38 @@
         </div>
         <div class="slide">
             <div class="intro">
-                <h3>Improvement</h3>
+                <h2>Improvement</h2>
                 <p>
-
+                    Our final content-based model was a combination of a product-based component and a user-based component, with the relative weightings of the two components controlled by the parameter β
                 </p>
             </div>
         </div>
         <div class="slide">
             <div class="intro">
-                <h3>Product-based Component</h3>
+                <h2>Product-based Component</h2>
+                <img src="img/product.png">
                 <p>
-
+                    The product-based component is a weighted average of all ratings of that product in the training set, where each rating is weighed by the estimated proportion of users who rated user <i>i</i>’s rating on product <i>j</i> as helpful. This expression is derived from placing an uninformative Uniform (i.e. Beta(1,1)) prior on the helpfulness and taking the posterior mean (PM) estimate after updating the prior with the helpfulness numerator and denominator.
                 </p>
             </div>
         </div>
         <div class="slide">
             <div class="intro">
-                <h3>User-based Component</h3>
+                <h2>User-based Component</h2>
+                <img src="img/user.png">
                 <p>
+                    The user-based component is a weighted average of all of the ratings given by a particular user, where a similarity score between 0 and 1 for products <i>n</i> and <i>j</i>, represents the text similarity of the aggregated reviews of products <i>n</i> and <i>j</i> calculated using a TF-IDF vectorizer and cosine similarity. Due to computational limitations we only computed similarity scores for the 10,000 most reviewed products in the training set.</p>
 
+                <p>Product group is a categorical designation assigned by Amazon to each product (e.g. “grocery”, “pet foods”). The parameter α controls how much the similarity score for products in the same product group is inflated towards 1. Note that if α = 1, then product similarity reduces to text similarity in all cases.
                 </p>
             </div>
         </div>
         <div class="slide">
             <div class="intro">
-                <h3>Final Model</h3>
+                <h2>Final Model</h2>
+                <img src="img/final.png">
                 <p>
-
+                    Our final model is the sum of the product-based and user-based components with relative weights assigned.
                 </p>
             </div>
         </div>
@@ -350,24 +406,23 @@
     <div class="section" id="section4">
         <div class="intro">
             <h1>Results</h1>
-            <p>
-                Tuning
-            </p>
-            <p>
-                Improvement over baseline
-            </p>
+            <h3>Tuning</h3>
+            <img src="img">
+            <h3>Improvement over baseline</h3>
+            <img src="img/rmsered.png">
+            <p>As shown above, our final model manages to beat both of our baseline models by customizing our predictions based on a combination of user preferences for each product, as well as the inherent quality of the products being reviewed.</p>
         </div>
     </div>
 
     <div class="section" id="section5">
         <div class="intro">
             <h1>Conclusion</h1>
-            <p>
-                Tuning
-            </p>
-            <p>
-                Improvement over baseline
-            </p>
+            <p>We were successfully able to beat our baseline models. However, the final tuning of our model raises several questions that should be addressed in the future. For example, the selection of α = 1 indicates that product groups do not contribute meaningfully to our model. This may has two possible explanations. The first is that several of the Product IDs were no longer recognized recognized by the Amazon API, which suggests that these products are no longer being sold. This makes sense given that the dataset contains reviews from Oct 1999 - Oct 2012. The second is that the product groups do not represent an accurate method for categorizing products. Manually checking these values supports this. For example, when examining coconut oils from different brands, one was grouped under <b>Groceries</b> while the other was under <b>Health and Beauty</b>.</p>
+            <p>However, our model only performs marginally better than a raw weighting of product mean and user mean. It appears that the similarity matrix was not an effective tool in our model. Furthermore, it suggests that user preferences, as far as we can tell, are not as individual as we believed, simply determining the benchmark the user reviews based on.</p>
+            <p>Furthermore, due to computational limitations, we were limited in the amount of products and reviews that we could predict on. Given the funding and computation time, it might be worth rerunning the entire computation process on the complete dataset.</p>
+            <p>Though we are uncertain about the effectiveness of these ideas, we have some recommendations for future exploration: Collect more features on users and products. This may be difficult given that Amazon’s API does not have an easy feature generation process for items and finding individual users and collecting more reviews is difficult due to privacy concerns. However, doing so may increase the amount of data to train on as well as improve the similarity matrix calculation process.</p>
+            <p>Additionally, we leave out the timestamps of reviews. As shown in the Data Exploration section, we noticed a time drift in scores, but it is unclear what sort of predictive power or interpretation this feature would have on our final model.</p>
+
         </div>
     </div>
 
