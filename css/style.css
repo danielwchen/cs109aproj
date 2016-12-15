@@ -13,7 +13,7 @@ table {
     border-spacing: 2px;
     /*border-width: 1px;*/
     /*border-color: black;*/
-    background: white;
+    background: rgba(255, 255, 255, .2);
 }
 fieldset,img {
     border: 0;
@@ -91,7 +91,7 @@ p {
 }
 
 .component{
-    width: 75%;
+    width: 65%;
 }
 
 .intro p{
@@ -162,9 +162,10 @@ p {
     /*margin-left: -420px;*/
 /*}*/
 .intro p{
-    width: 80%;
+    width: 85%;
     margin: 0 auto;
-    font-size: 17px;
+    font-size: 20px;
+    padding-bottom: 10px;
 }
 body{
     text-align:center;
@@ -181,4 +182,9 @@ body{
     border-color: transparent transparent transparent #000;
     opacity: 0.4;
     border-width: 40px 0 40px 40px;
+}
+
+b {
+    font-weight: bolder;
+    color: rgba(0,0,0,.8);
 }

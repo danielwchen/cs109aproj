@@ -40,7 +40,7 @@
         <h3>CS 109a Fall 2016</h3>
         <input type="hidden" name="id" value="1" />
 
-        <p>The Amazon Fine Foods Dataset, collected and distributed by the Stanford Network Analysis Project, contains nearly 600,000 Amazon reviews of over 70,000 food and food-related products by over 250,000 users. With this data, we set out to develop a system for predicting future ratings based on a combination of product features and user characteristics. If successful, such a system could be used to develop an accurate recommendation system.</p>
+        <p>The <b>Amazon Fine Foods Dataset</b>, collected and distributed by the Stanford Network Analysis Project, contains nearly <b>600,000 Amazon reviews</b> of over <b>70,000 food and food-related products</b> by over <b>250,000 users</b>. With this data, we set out to develop a system for predicting future ratings based on a combination of <b>product features</b> and <b>user characteristics</b>. If successful, such a system could be used as an accurate recommendation system.</p>
         <!--<img src="imgs/fullPage.png" alt="fullPage" />-->
     </div>
 
@@ -48,37 +48,73 @@
         <div class="slide">
             <div class="intro">
                 <h1>Data Sources:</h1>
-                <p>Our data set consists of 568,454 reviews on 74,258 food-related Amazon products by 217468 users. Each review includes UserId, ProductId, Score, and Text, as well as some other values.</p>
-                <p>In order to obtain meaningful features for the 74,258 products in the data set, we took advantage of the Amazon API. This API allowed us to look up items by the ProductIds and return Product Groups. For example, product <b>B003XUL27E</b>, a product named <b>Healthy Choice All Natural Red Beans & Rice, 14-Ounce Containers (Pack of 6)</b>, returns product group <b>Grocery</b>.<br><br>
-                Click the right arrow to see a full list of features and their explanations.</p>
+                <p>Our data set consists of <b>568,454 reviews</b> on <b>74,258 food-related Amazon products</b> by <b>217468 users</b>. Each review includes UserId, ProductId, Score, and Text, as well as some other values.</p>
+                <p>In order to obtain meaningful features for the products in the data set, we took advantage of the Amazon API. This API allowed us to look up items by the ProductIds and return Product Groups. For example, product <b>B003XUL27E</b>, named <b>Healthy Choice All Natural Red Beans & Rice, 14-Ounce Containers (Pack of 6)</b>, returns product group <b>Grocery</b>.</p>
+                <p>Click the right arrow to see a full list of features and their explanations.</p>
             </div>
         </div>
         <div class="slide">
             <div class="intro">
                 <h2>Datasets</h2>
-                <ol>
-                    <li>
-                        Amazon Fine Foods Dataset
-                        <ul>
-                            <li>Id</li>
-                            <li>ProductId - unique identifier for the product</li>
-                            <li>UserId - unique identifier for the user</li>
-                            <li>ProfileName</li>
-                            <li>HelpfulnessNumerator - number of users who found the review helpful</li>
-                            <li>HelpfulnessDenominator - number of users who indicated whether they found the review helpful</li>
-                            <li>Score - rating between 1 and 5</li>
-                            <li>Time - timestamp for the review</li>
-                            <li>Summary - summary of review, written by user</li>
-                            <li>Text - full review text</li>
-                        </ul>
-                    </li>
-                    <li>
-                        Amazon API
-                        <ul>
-                            <li>Product Group - categorization of product defined by Amazon</li>
-                        </ul>
-                    </li>
-                </ol>
+                <table border="1" align="center" width="800px">
+                    <tr>
+                        <td colspan="2"><h3>Amazon Fine Foods Dataset</h3></td>
+                    </tr>
+                    <tr>
+                        <td><b>Id</b></td>
+                        <td>Unique number assigned to each review</td>
+                    </tr>
+                    <tr>
+                        <td><b>ProductId</b></td>
+                        <td>Unique identifier for the product</td>
+                    </tr>
+                    <tr>
+                        <td><b>UserId</b></td>
+                        <td>Unique identifier for the user</td>
+                    </tr>
+                    <tr>
+                        <td><b>ProfileName</b></td>
+                        <td>User name corresponding to the UserId</td>
+                    </tr>
+                    <tr>
+                        <td><b>HelpfulnessNumerator</b></td>
+                        <td>Number of users who rated the review as helpful</td>
+                    </tr>
+                    <tr>
+                        <td><b>HelpfulnessDenominator</b></td>
+                        <td>Number of users who indicated whether they found the review helpful</td>
+                    </tr>
+                    <tr>
+                        <td><b>Score</b></td>
+                        <td>Rating between 1 and 5</td>
+                    </tr>
+                    <tr>
+                        <td><b>Time</b></td>
+                        <td>Timestamp for the review</td>
+                    </tr>
+                    <tr>
+                        <td><b>Summary</b></td>
+                        <td>Summary of review, written by user</td>
+                    </tr>
+                    <tr>
+                        <td><b>Text</b></td>
+                        <td>full review text</td>
+                    </tr>
+                </table>
+                <br>
+                <table border="1" align="center" width="800px">
+                    <tr>
+                        <td colspan="2"><h3>Amazon API</h3></td>
+                    </tr>
+                    <tr>
+                        <td><b>Product ID</b></td>
+                        <td>Input provided from Amazon Fine Food Dataset</td>
+                    </tr>
+                    <tr>
+                        <td><b>Product Group</b></td>
+                        <td>Categorization of product defined by Amazon</td>
+                    </tr>
+                </table>
             </div>
         </div>
     </div>
@@ -87,16 +123,8 @@
         <div class="slide">
             <div class="intro">
                 <h1>Data Exploration</h1>
-                <p>As with any real world dataset, the Amazon Fine Foods Dataset contained many peculiarities. We corrected for the first four observations during our modeling. Though the remaining two did not inform our model, we present them as curiosities that would be interesting to explore in future work.<br><br>
-                Click the right arrow to see individual observations from our exploration.</p>
-                <!--<h3>Main Conclusions</h3>-->
-                <!--<p>Though our dataset contains nearly 600,000 reviews and over 250,000 users, many users rate very few products. The median user has only rated a single product. These users cause a problem when building, training, and testing a content based recommendation system. Because our model would like to incorporate user preferences into the model. However, it is extremely difficult to do this properly if there is only one datapoint for a user, which would either fall into the training or the test set but not both. Since each user is treated as independent of other users, over sampling these users would not be a feasible solution. Thus, we decided to cut out all users who reviewed fewer than a certain threshold of products (n = 5). This eliminated more than half of the users.</p>-->
-
-
-                <!--<p>Next, we looked at the remaining users and their reviews. We found that many of these “active users” seem like bots or paid reviewers. These are users who left identical reviews on various similar products in a very short time span. We believe these reviews to be a poor representation of the average user. We believed that including these reviewers would both affect our model and cause our model to give unrepresentative results. Additionally, we believe that including these reviews and predicting for these users would affect our baseline and model performance. Thus, we eliminated these reviews, which accounted for nearly half of the reviews.</p>-->
-
-
-                <!--<p>Next, because our dataset did not include features of products, in order to create a content based prediction system, we needed to identify some features in order to create the required similarity matrix. First, we used the Amazon Advertising API to collect more data on the over 70,000 products. This included the product name and product group (Grocery, Snack Food, etc.). However, for many products, the Amazon APi no longer recognized the Product ID. This suggests that these products are no longer being sold or stocked by Amazon. This makes sense given that the dataset only contains reviews from Oct 1999 - Oct 2012. Additionally, we collected the product reviews for that product and vectorized the reviews to generate more features. At this point,we moved on to our modeling step.</p>-->
+                <p>As with any real world dataset, the Amazon Fine Foods Dataset contained many peculiarities. We present six of the most interesting observations: <b>Duplicates</b>, <b>Sparsity by User</b>, <b>Sparsity by Product</b>, <b>Rarity of Helpfulness Scores</b>, <b>Disproportional Score Distributions</b>, and <b>Time Drifts</b>. We corrected for the first four observations during our modeling. Though the remaining two did not inform our model, we present them as curiosities that would be interesting to explore in future work.</p>
+                <p>Click the right arrow to see individual observations from our exploration.</p>
             </div>
         </div>
         <div class="slide">
@@ -117,7 +145,7 @@
             <div class="intro">
                 <h2>3. Number of Reviews by Product</h2>
                 <img src="img/numreviewsforprod.png" height="330px"><img src="img/numreviewsperprod.png" height="330px">
-                <p>Compounding the sparsity of user ratings, each product also generally have very few ratings. With so few reviews, it's difficult to accurately judge product similarity using just the Fine Food Dataset, motivating us to use the Amazon API to provide additional product features.</p>
+                <p>Compounding the sparsity of user ratings, each product also generally has very few ratings. With so few reviews, it's difficult to accurately judge product similarity using just the Fine Food Dataset, motivating us to use the Amazon API to provide additional product features.</p>
             </div>
         </div>
         <div class="slide">
@@ -137,7 +165,7 @@
         <div class="slide">
             <div class="intro">
                 <h2>6. Time Drift</h2>
-                <img src="img/time.png">
+                <img src="img/time.png" height="400px">
                 <p>Scores seem to improve over time throughout the dataset. We do not yet have a robust explanation of this phenomenon, but it could potentially be accounted for by a more complex model.</p>
             </div>
         </div>
@@ -339,46 +367,46 @@
             <div class="intro">
                 <h1>Modeling</h1>
                 <p>
-                    We developed our final model in three steps. First, we created two baseline models to serve as our target to beat. Then, we developed a model for determining a products "true" score based on previous reviews by other users. Finally, we developed a method for calculating product similarity by review text, which we were then able to use to estimate user preferences.<br>
-                    For modeling, the dataset, after all corrections discussed in the previous section, was split into a 70% training set and 30% testing set.
-                    <br><br>
-                    Click the right arrow to see how we developed our final model.</p>
-                </p>
+                    We developed our final model in three steps. First, we created <b>two baseline models to serve as our target to beat</b>. Then, we developed a model for determining a <b>product's "true" score based on previous reviews by other users</b>. Finally, we developed a method for <b>calculating product similarity by review text</b>, which we were then able to use to <b>estimate user preferences</b>.</p>
+                <p>For modeling, the dataset, after all corrections discussed in the previous section, was split into a 70% training set and 30% testing set.</p>
+                    <p>Click the right arrow to see how we developed our final model.</p>
+
             </div>
         </div>
         <div class="slide">
             <div class="intro">
                 <h2>Baseline Models</h2>
                 <p>
-                    We developed two baseline models, derived from a simple assumption. Our baseline models assume users will vote according to their past average. Thus, both of our baseline models simply predict future ratings by assigning them the mean or median of the user's past reviews.
-                    <ul>
-                <li>
-                    User Median Model
-                    <ul>
-                        <li>RMSE = 1.289</li>
-                    </ul>
-                </li>
-                <li>
-                    User Mean Model
-                    <ul>
-                        <li>RMSE = 1.198</li>
-                    </ul>
-                </li>
-            </ul>
-                </p>
+                    We developed two baseline models, derived from a simple assumption. Our baseline models assume users will vote according to their past average. Thus, both of our baseline models simply predict future ratings by assigning them the mean or median of the user's past reviews.</p>
+                <table border="1" align="center" width="800px">
+                    <tr>
+                        <td><b>Model</b></td>
+                        <td><b>RMSE</b></td>
+                    </tr>
+                    <tr>
+                        <td><b>User Median Model</b></td>
+                        <td>1.289</td>
+                    </tr>
+                    <tr>
+                        <td><b>User Mean Model</b></td>
+                        <td>1.198</td>
+                    </tr>
+                </table>
             </div>
         </div>
         <div class="slide">
             <div class="intro">
                 <h2>Improvement</h2>
-                <p>
-                    Our final content-based model was a combination of a product-based component and a user-based component, with the relative weightings of the two components controlled by the parameter β
+                <p>Our final content-based model was a combination of a <b>product-based component</b> and a <b>user-based component</b>, with the relative weightings of the two components controlled by the parameter β.</p>
+                <p>The <b>product-based component</b> will judge the general quality of each product, with the assumption that in general, people <b>prefer objectively higher quality products</b> to generally poor quality products, even if they don't have a specific preference for the item's features. To achieve this evaluation, we used a weighted average of all the scores of each item, where the assigned weight of each review was based on the helpfulness of the review (assigned using an uninformative uniform prior).</p>
+                <p>The <b>user-based component</b> assumes that <b>users will prefer products that are similar to other products that they've both purchased and rated well</b>. Judging product similarity was a nontrivial task. Because our dataset had minimal information on the specific products, we decided to combine two methods to generate product similarity. First, for each product, we aggregated all of its text reviews and vectorized it using a TF-IDF vectorizer (which converts text in a document to a vector of word counts weighted inversely by the overall frequency of words across all documents) and obtained its cosine similarity with all other products. Then, we used the Amazon API to extract product groups. Products that were in the same product groups had their similarity inflated by a tunable variable α.
                 </p>
+                <p>To see a more mathematically rigorous explanation, please click the right arrow.</p>
             </div>
         </div>
         <div class="slide">
             <div class="intro">
-                <h2>Product-based Component</h2>
+                <!--<h2>Product-based Component</h2>-->
                 <img src="img/product.png" class="component">
                 <p>
                     The product-based component is a weighted average of all ratings of that product in the training set, where each rating is weighed by the estimated proportion of users who rated user <i>i</i>’s rating on product <i>j</i> as helpful. This expression is derived from placing an uninformative Uniform (i.e. Beta(1,1)) prior on the helpfulness and taking the posterior mean (PM) estimate after updating the prior with the helpfulness numerator and denominator.
@@ -387,7 +415,7 @@
         </div>
         <div class="slide">
             <div class="intro">
-                <h2>User-based Component</h2>
+                <!--<h2>User-based Component</h2>-->
                 <img src="img/user.png" class="component">
                 <p>
                     The user-based component is a weighted average of all of the ratings given by a particular user, where a similarity score between 0 and 1 for products <i>n</i> and <i>j</i>, represents the text similarity of the aggregated reviews of products <i>n</i> and <i>j</i> calculated using a TF-IDF vectorizer and cosine similarity. Due to computational limitations we only computed similarity scores for the 10,000 most reviewed products in the training set.</p>
@@ -398,7 +426,7 @@
         </div>
         <div class="slide">
             <div class="intro">
-                <h2>Final Model</h2>
+                <!--<h2>Final Model</h2>-->
                 <img src="img/final.png" class="component">
                 <p>
                     Our final model is the sum of the product-based and user-based components with relative weights assigned.
@@ -411,9 +439,8 @@
         <div class="slide">
             <div class="intro">
                 <h1>Results</h1>
-                <p>We take the final model developed above, and tune the weighting parameters (α and β) to find our optimal model. We use KFold Validation on the original training dataset, we compute and plot RMSE scores to understand the impacts of the different weights. We then apply our optimal model onto the testing dataset.
-                    <br><br>
-                Click the right arrow to see our tuning process and final results.
+                <p>We take the final model developed above, and tune the weighting parameters (α and β) to find our optimal model. We use KFold Validation on the original training dataset, we compute and plot RMSE scores to understand the impacts of the different weights. We then apply our optimal model onto the testing dataset.</p>
+                <p>Click the right arrow to see our tuning process and final results.
                 </p>
             </div>
         </div>
@@ -428,7 +455,7 @@
         </div>
         <div class="slide">
             <div class="intro">
-                <h3>Improvement over baseline</h3>
+                <h3>Improvement over Baseline</h3>
                 <img src="img/rmsered.png" id="rmsered">
                 <p>As shown above, our final model manages to beat both of our baseline models by customizing our predictions based on a combination of user preferences for each product, as well as the inherent quality of the products being reviewed.</p>
             </div>
@@ -436,16 +463,35 @@
     </div>
 
     <div class="section" id="section5">
-        <div class="intro">
-            <h1>Conclusion</h1>
-            <p>We were successfully able to beat our baseline models. However, the final tuning of our model raises several questions that should be addressed in the future. For example, the selection of α = 1 indicates that product groups do not contribute meaningfully to our model. This may has two possible explanations. The first is that several of the Product IDs were no longer recognized recognized by the Amazon API, which suggests that these products are no longer being sold. This makes sense given that the dataset contains reviews from Oct 1999 - Oct 2012. The second is that the product groups do not represent an accurate method for categorizing products. Manually checking these values supports this. For example, when examining coconut oils from different brands, one was grouped under <b>Groceries</b> while the other was under <b>Health and Beauty</b>.</p>
-            <p>However, our model only performs marginally better than a raw weighting of product mean and user mean. It appears that the similarity matrix was not an effective tool in our model. Furthermore, it suggests that user preferences, as far as we can tell, are not as individual as we believed, simply determining the benchmark the user reviews based on.</p>
-            <p>Furthermore, due to computational limitations, we were limited in the amount of products and reviews that we could predict on. Given the funding and computation time, it might be worth rerunning the entire computation process on the complete dataset.</p>
-            <p>Though we are uncertain about the effectiveness of these ideas, we have some recommendations for future exploration: Collect more features on users and products. This may be difficult given that Amazon’s API does not have an easy feature generation process for items and finding individual users and collecting more reviews is difficult due to privacy concerns. However, doing so may increase the amount of data to train on as well as improve the similarity matrix calculation process.</p>
-            <p>Additionally, we leave out the timestamps of reviews. As shown in the Data Exploration section, we noticed a time drift in scores, but it is unclear what sort of predictive power or interpretation this feature would have on our final model.</p>
 
+        <div class="slide">
+            <div class="intro">
+                <h1>Conclusions</h1>
+                <p>We were successfully able to beat our baseline models. However, the final tuning of our model raises several questions that should be addressed in the future. For example, the selection of α = 1 indicates that <b>product groups do not contribute meaningfully to our model</b>. This may has two possible explanations. The first is that several of the Product IDs were no longer recognized recognized by the Amazon API, which suggests that these products are no longer being sold. This makes sense given that the dataset contains reviews from <b>Oct 1999 - Oct 2012</b>. The second is that the product groups do not represent an accurate method for categorizing products. Manually checking these values supports this. For example, when examining coconut oils from different brands, one was grouped under <b>Groceries</b> while the other was under <b>Health and Beauty</b>.</p>
+                <p>Click the right arrow to see our suggestions for future work.</p>
+            </div>
+        </div>
+        <div class="slide">
+            <div class="intro">
+                <h2>Future Work</h2>
+                <p>Though we beat our baseline models, our model only performs marginally better than a raw weighting of product mean and user mean. It appears that the similarity matrix was not an effective tool in our model. Furthermore, it suggests that user preferences, as far as we can tell, are not as individual as we believed, simply determining the benchmark the user reviews based on.</p>
+                <p>Furthermore, due to computational limitations, we were limited in the amount of products and reviews that we could predict on. Given the funding and computation time, it might be worth rerunning the entire computation process on the complete dataset.</p>
+                <p>Additionally, more features on users and products would give more information to train the model's components. This may be difficult given that Amazon’s API does not have an easy feature generation process for items and finding individual users and collecting more reviews is difficult due to privacy concerns. However, doing so may increase the amount of data to train on as well as improve the similarity matrix calculation process.</p>
+                <p>Finally, in our model, we currently disregard the timestamps of reviews. As shown in the Data Exploration section, we noticed a time drift in scores, but it is unclear what sort of predictive power or interpretation this feature would have in a more complicated final model, but it may be useful in normalize user ratings over time when calculating the product based components.</p>
+                <p>Click the right arrow to see our references.</p>
+            </div>
+        </div>
+        <div class="slide">
+            <div class="intro">
+                <h2>References</h2>
+                <p>Das, S. (2015, August 11). Beginners Guide to learn about Content Based Recommender Engines. Retrieved December 08, 2016, from https://www.analyticsvidhya.com/blog/2015/08/beginners-guide-learn-content-based-recommender-systems</p>
+                <p>Marafi, S. (2015, April 28). Collaborative Filtering with Python. Retrieved December 08, 2016, from http://www.salemmarafi.com/code/collaborative-filtering-with-python/</p>
+                <p>Koren, Y. (2009). The bellkor solution to the netflix grand prize. Netflix prize documentation, 81, 1-10.</p>
+                <p>Leskovec, J., Rajaraman, A., & Ullman, J. D. (2014). Mining of massive datasets / Jure Leskovec, Standford University, Anand Rajaraman, Milliways Labs, Jeffrey David Ullman, Standford University (2nd ed.). Cambridge: Cambridge University Press.</p>
+            </div>
         </div>
     </div>
+
 
 </div>
 
